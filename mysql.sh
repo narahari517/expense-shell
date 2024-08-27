@@ -42,5 +42,12 @@ validate $? "Enabling MySQL server"
 systemctl start mysqld &>>$Logfile
 validate $? "Starting MySQL server"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$Logfile
-validate $? "setting up root password for MySQL server"
+mysql -h mysql.nhari.online -u root -pExpenseApp@1 &>>$Logfile
+if [ $? -ne 0 ]
+then
+    echo "mysql root password is not setup, setting now." | tee -a $Logfile
+    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$Logfile
+    validate $? "MySQL root password setup"
+else
+    echo -e "mysql root password is already setup....$Y SKIPPING $N" | tee -a $Logfile
+fi
