@@ -34,15 +34,15 @@ echo "Script started running at: $(date)" | tee -a $logfile
 
 root_check
 
-dnf module disable nodejs -y
+dnf module disable nodejs -y &>>$logfile
 validate $? "Disable default nodejs"
 
-dnf module enable nodejs:20 -y
+dnf module enable nodejs:20 -y &>>$logfile
 validate $? "Enable nodejs:20"
 
-dnf install nodejs -y
+dnf install nodejs -y &>>$logfile
 validate $? "Installing nodejs:20"
 
-useradd expense
+useradd expense &>>$logfile
 validate $? "Creating expense user"
 
