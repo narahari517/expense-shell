@@ -63,5 +63,24 @@ validate $? "Downloading backend application code"
 cd /app
 rm -rf /app/*
 unzip /tmp/backend.zip &>>$logfile
-validate $? "Extracting backend application code"
+validate $? "Extracting backend application code" | tee -a $logfile
 
+npm install &>>$logfile
+cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service
+
+#load the data before running backend
+
+dnf install mysql -y &>>$logfile
+validate $? "Installing mysql client"
+
+mysql -h mysql.nhari.online -uroot -pExpenseApp@1 < /app/schema/backend.sql &>>$logfile
+validate $? "schema loading"
+
+systemctl daemon-reload &>>$logfile
+validate $? "daemon reload"
+
+systemctl enable backend &>>$logfile
+validate $? "enable backend"
+
+systemctl restart backend &>>$logfile
+validate $? "restart backend"
