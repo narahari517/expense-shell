@@ -24,9 +24,10 @@ root_check(){
 validate(){
     if [ $1 -ne 0 ]
     then
-        echo -e "$2 is $R FAILED $N" | tee -a $logfile
+        echo -e "$2 is...$R FAILED $N" | tee -a $logfile
+        exit 1
     else
-        echo -e "$2 is $G SUCCESS $N" | tee -a $logfile
+        echo -e "$2 is...$G SUCCESS $N" | tee -a $logfile
     fi
 }
 
