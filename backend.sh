@@ -44,7 +44,7 @@ validate $? "Enable nodejs:20"
 dnf install nodejs -y &>>$logfile
 validate $? "Installing nodejs:20"
 
-id expense
+id expense &>>$logfile
 if [ $? -ne 0 ]
 then
     echo -e "expense user is not exist, $G creating now $N" | tee -a $logfile
