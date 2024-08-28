@@ -54,4 +54,6 @@ validate $? "Extracting frontend code"
 
 cp /home/ec2-user/expense-shell/expense.conf /etc/nginx/default.d/expense.conf &>>$Logfile
 validate $? "copied expense.conf"
+
 systemctl restart nginx
+validate $? "restarting nginx"
