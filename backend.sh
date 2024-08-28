@@ -51,6 +51,6 @@ then
     useradd expense &>>$logfile
     validate $? "Creating expense user" | tee -a $logfile
 else
-    echo -e "expense user is already created, $Y SKIPPING $N" | tee -a $logfile
+    echo -e "expense user is already created...$Y SKIPPING $N" | tee -a $logfile
 fi
 
