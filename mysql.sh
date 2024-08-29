@@ -15,7 +15,7 @@ N="\e[0m"
 ROOT_CHECK(){
     if [ $userid -ne 0 ]
     then
-        echo -e "$R Please run this script with root previleges $N" | tee -a $LOG_FILE
+        echo -e "$R Please run this script with root previleges $N" | tee -a $LOGFILE
         exit 1
     fi
 }
@@ -23,33 +23,33 @@ ROOT_CHECK(){
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
-        echo -e "$2 is...$R FAILED $N" | tee -a $LOG_FILE
+        echo -e "$2 is...$R FAILED $N" | tee -a $LOGFILE
         exit 1
     else
-        echo -e "$2 is...$G SUCCESS $N" | tee -a $LOG_FILE
+        echo -e "$2 is...$G SUCCESS $N" | tee -a $LOGFILE
     fi
 }
 
-echo "Script started running at: $(date)" | tee -a $LOG_FILE
+echo "Script started running at: $(date)" | tee -a $LOGFILE
 
 ROOT_CHECK
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>>$LOGFILE
 VALIDATE $? "Installing mysql server"
 
-systemctl enable mysqld &>>$LOG_FILE
+systemctl enable mysqld &>>$LOGFILE
 VALIDATE $? "Enabling mysql server"
 
-systemctl start mysqld &>>$LOG_FILE
+systemctl start mysqld &>>$LOGFILE
 VALIDATE $? "Starting mysql server"
 
-mysql -h mysql.nhari.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
+mysql -h mysql.nhari.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOGFILE
 if [ $? -ne 0 ]
 then
-    echo -e "mysql root password is not setup,$Y setting up now $N" &>>$LOG_FILE
-    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE
+    echo -e "mysql root password is not setup,$Y setting up now $N" &>>$LOGFILE
+    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
     VALIDATE $? "mysql root password setup"
 else
-    echo -e "mysql root password is already setup...$Y SKIPPING $N" | tee -a $LOG_FILE
+    echo -e "mysql root password is already setup...$Y SKIPPING $N" | tee -a $LOGFILE
 fi
 
