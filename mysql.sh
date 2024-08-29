@@ -34,22 +34,22 @@ echo "Script started running at: $(date)" | tee -a $LOG_FILE
 
 ROOT_CHECK
 
-dnf install mysql-server -y | tee -a $LOG_FILE
+dnf install mysql-server -y &>>$LOG_FILE
 VALIDATE $? "Installing mysql server"
 
-systemctl enable mysqld | tee -a $LOG_FILE
+systemctl enable mysqld &>>$LOG_FILE
 VALIDATE $? "Enabling mysql server"
 
-systemctl start mysqld | tee -a $LOG_FILE
+systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "Starting mysql server"
 
-mysql -h mysql.nhari.online -u root -pExpenseApp@1 -e 'show databases;' | tee -a $LOG_FILE
+mysql -h mysql.nhari.online -u root -pExpenseApp@1 -e 'show databases;' &>>$LOG_FILE
 if [ $? -ne 0 ]
 then
-    echo -e "mysql root password is not setup,$Y setting up now $N" | tee -a $LOG_FILE
-    mysql_secure_installation --set-root-pass ExpenseApp@1
+    echo -e "mysql root password is not setup,$Y setting up now $N" &>>$LOG_FILE
+    mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE
     VALIDATE $? "mysql root password setup"
 else
-    echo -e "mysql root password is already setup...$Y SKIPPING $N"
+    echo -e "mysql root password is already setup...$Y SKIPPING $N" | tee -a $LOG_FILE
 fi
 
